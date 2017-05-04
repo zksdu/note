@@ -19,9 +19,9 @@ public class NoteContentProvider extends ContentProvider {
 
 
     private static final UriMatcher sMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-    static
-    {
-        sMatcher.addURI(AUTHORITY, TableNote.TABLE_NAME, 1 );
+
+    static {
+        sMatcher.addURI(AUTHORITY, TableNote.TABLE_NAME, 1);
     }
 
     @Override
@@ -33,10 +33,10 @@ public class NoteContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        switch (sMatcher.match(uri)){
+        switch (sMatcher.match(uri)) {
             case 1:
-                SQLiteDatabase db =  mHelper.getReadableDatabase();
-                Cursor c = db.query("note", projection, selection, selectionArgs, null, null, sortOrder);
+                SQLiteDatabase db = mHelper.getReadableDatabase();
+                Cursor c = db.query(TableNote.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 return c;
             case 2:
 
@@ -45,8 +45,6 @@ public class NoteContentProvider extends ContentProvider {
 
 
         }
-
-
 
 
         return null;
@@ -61,7 +59,15 @@ public class NoteContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        return null;
+        switch (sMatcher.match(uri)) {
+            case 1:
+                SQLiteDatabase db = mHelper.getWritableDatabase();
+                db.insert(TableNote.TABLE_NAME, null, values);
+                db.close();
+                return Uri.withAppendedPath(NOTE_URI, values.getAsString(TableNote.COL_ID));
+            default:
+                return null;
+        }
     }
 
     @Override

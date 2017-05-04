@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.gdcp.note.com.gdcp.note.date.NoteDBUtil;
 import com.gdcp.note.R;
+import com.gdcp.note.com.gdcp.note.date.NoteDBUtil;
+
+import java.util.Date;
 
 public class AddActivity extends AppCompatActivity {
     private Button btnAdd;
@@ -22,7 +24,8 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String title = "asdfadsfasd";
                 String content = "5241654641321";
-                NoteDBUtil.addNote(AddActivity.this, title, content);
+                Date date = new Date();
+                NoteDBUtil.addNote(AddActivity.this, title, content, date);
             }
         });
     }
